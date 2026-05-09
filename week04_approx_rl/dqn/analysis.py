@@ -39,11 +39,28 @@ def play_and_log_episode(env, agent, t_max=10000):
             break
     states.append(s)  # the last state
 
+    qvalues_all = np.array(qvalues_all)
+    rewards = np.array(rewards, dtype=np.float64)
+    actions = np.array(actions)
+
+    # V predicted by the agent at each visited state.
+    v_agent = qvalues_all.max(axis=1)
+
+    # Monte-Carlo discounted return G_t for each visited state.
+    gamma = 0.99
+    v_mc = np.zeros_like(rewards)
+    running = 0.0
+    for t in reversed(range(len(rewards))):
+        running = rewards[t] + gamma * running
+        v_mc[t] = running
+
     return_pack = {
         "states": np.array(states),
-        "qvalues": np.array(qvalues_all),
-        "actions": np.array(actions),
-        "rewards": np.array(rewards),
+        "qvalues": qvalues_all,
+        "actions": actions,
+        "rewards": rewards,
+        "v_agent": v_agent,
+        "v_mc": v_mc,
         "episode_finished": terminated,
     }
 

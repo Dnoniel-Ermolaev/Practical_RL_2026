@@ -34,10 +34,10 @@ class ReplayBuffer(object):
         for i in idxes:
             data = self._storage[i]
             obs_t, action, reward, obs_tp1, done = data
-            obses_t.append(np.array(obs_t, copy=False))
-            actions.append(np.array(action, copy=False))
+            obses_t.append(np.asarray(obs_t))
+            actions.append(np.asarray(action))
             rewards.append(reward)
-            obses_tp1.append(np.array(obs_tp1, copy=False))
+            obses_tp1.append(np.asarray(obs_tp1))
             dones.append(done)
         return (
             np.array(obses_t),
@@ -103,12 +103,12 @@ class LazyFramesVectorReplayBuffer(ReplayBuffer):
             n_envs = action.shape[0]
             env_idx_chosen_for_sample = random.randint(0, n_envs - 1)
             obses_t.append(
-                np.array(obs_t, copy=False)[:, env_idx_chosen_for_sample],
+                np.asarray(obs_t)[:, env_idx_chosen_for_sample],
             )
-            actions.append(np.array(action, copy=False)[env_idx_chosen_for_sample])
+            actions.append(np.asarray(action)[env_idx_chosen_for_sample])
             rewards.append(reward[env_idx_chosen_for_sample])
             obses_tp1.append(
-                np.array(obs_tp1, copy=False)[:, env_idx_chosen_for_sample],
+                np.asarray(obs_tp1)[:, env_idx_chosen_for_sample],
             )
             dones.append(done[env_idx_chosen_for_sample])
         return (
