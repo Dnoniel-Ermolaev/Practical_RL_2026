@@ -1,17 +1,19 @@
 """ Environment wrappers. """
 from collections import defaultdict, deque
 
+import ale_py
 import cv2
 import gymnasium as gym
 import numpy as np
 from gymnasium import ObservationWrapper, RewardWrapper, Wrapper
 from gymnasium.spaces import Box
 from gymnasium.wrappers import RecordVideo
-from shimmy.atari_env import AtariEnv
+from ale_py import AtariEnv
 from tensorboardX import SummaryWriter
 
 from env_batch import ParallelEnvBatch
 
+gym.register_envs(ale_py)
 cv2.ocl.setUseOpenCL(False)
 
 
